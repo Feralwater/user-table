@@ -10,7 +10,6 @@ const UserInfo = ({user}) => {
                 <div> City: {user.adress.city}</div>
                 <div> State: {user.adress.state}</div>
                 <div> Index: {user.adress.zip}</div>
-
             </div>}
         </div>
     );
