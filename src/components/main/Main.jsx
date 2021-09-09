@@ -4,35 +4,36 @@ import {getUsers} from "../../actions/users";
 import UserRow from "../userRow/UserRow";
 import UserInfo from "../userInfo/userInfo";
 import {setUsers} from "../../reducers/usersReducer";
+import Filter from "../filter/Filter";
 
 const Main = () => {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
+    const filteredUsers = useSelector(state => state.users.filteredUsers);
     const chosenUserId = useSelector(state => state.users.chosenUserId);
     const [searchValue, setSearchValue] = useState("");
     useEffect(() => {
         dispatch(getUsers())
-    }, [])
+    }, [dispatch])
     const findUserInfo = (userId) => users.find(u => +u.id === +userId);
     const userInfo = findUserInfo(chosenUserId);
     const searchHandler = () => [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
     let usersForRender = searchHandler();
     const onKeyDown = e => {
         if (e.key === "Enter") {
-            usersForRender =[...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
+            usersForRender = [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
         }
     }
     const [sortName, setSortName] = useState('');
     const [direction, setDirection] = useState(-1);
 
     const sortHandler = (sortField) => {
-        setSortName(sortField);
-        const currentDirection = (sortName === sortField)? -direction :  -1;
-        setDirection(currentDirection);
+        const currentDirection = (sortName === sortField) ? -direction : -1;
         usersForRender = [...users].sort((a, b) => a[sortField] > b[sortField] ? -currentDirection : currentDirection);
         dispatch(setUsers(usersForRender));
+        setDirection(currentDirection);
+        setSortName(sortField);
     }
-
     return (
         <div>
             <div>
@@ -47,7 +48,9 @@ const Main = () => {
                 />
                 <button onClick={() => searchHandler()}>Search</button>
             </div>
+            <Filter/>
             <table border="1">
+                <thead>
                 <tr>
                     <th onClick={() => {
                         sortHandler("id");
@@ -58,24 +61,29 @@ const Main = () => {
                     }}>First name
                     </th>
                     <th onClick={() => {
-                        sortHandler("lastName")
+                        sortHandler("lastName");
                     }}>Last name
                     </th>
                     <th onClick={() => {
-                        sortHandler("email")
+                        sortHandler("email");
                     }}>Email
                     </th>
                     <th onClick={() => {
-                        sortHandler("phone")
+                        sortHandler("phone");
                     }}>Phone
                     </th>
                     <th onClick={() => {
-                        sortHandler("state")
+                        sortHandler("state");
                     }}>State
                     </th>
                 </tr>
-                {usersForRender.length > 0 ? usersForRender.map(u => <UserRow user={u}/>) : users.map(u => <UserRow
-                    user={u}/>)}
+                </thead>
+                <tbody>
+                {usersForRender.length > 0 ?
+                    usersForRender.map(u => <UserRow user={u} key={u.id + u.email}/>)
+                    : filteredUsers.length > 0 ? filteredUsers.map(u => <UserRow user={u} key={u.id + u.email}/>)
+                        : users.map(u => <UserRow user={u} key={u.id + u.email}/>)}
+                </tbody>
             </table>
             <UserInfo user={userInfo}/>
         </div>
