@@ -5,6 +5,7 @@ import UserRow from "../userRow/UserRow";
 import UserInfo from "../userInfo/userInfo";
 import {setUsers} from "../../reducers/usersReducer";
 import Filter from "../filter/Filter";
+import Pagination from "../../pagination/Pagination";
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -12,6 +13,12 @@ const Main = () => {
     const filteredUsers = useSelector(state => state.users.filteredUsers);
     const chosenUserId = useSelector(state => state.users.chosenUserId);
     const [searchValue, setSearchValue] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(20);
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+    const paginate = pageNumber => setCurrentPage(pageNumber);
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
@@ -82,9 +89,10 @@ const Main = () => {
                 {usersForRender.length > 0 ?
                     usersForRender.map(u => <UserRow user={u} key={u.id + u.email}/>)
                     : filteredUsers.length > 0 ? filteredUsers.map(u => <UserRow user={u} key={u.id + u.email}/>)
-                        : users.map(u => <UserRow user={u} key={u.id + u.email}/>)}
+                        : currentUsers.map(u => <UserRow user={u} key={u.id + u.email}/>)}
                 </tbody>
             </table>
+            <Pagination usersPerPage={usersPerPage} totalUsers={users.length} paginate={paginate}/>
             <UserInfo user={userInfo}/>
         </div>
     );
