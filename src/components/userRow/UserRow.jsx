@@ -1,15 +1,16 @@
 import React from 'react';
 import {useDispatch} from "react-redux";
 import {setChosenUserId} from "../../reducers/usersReducer";
+import style from "./UserRow.module.scss"
 
-const UserRow = ({user}) => {
+const UserRow = ({user, setActiveModal}) => {
     const dispatch = useDispatch();
-    const showUserInfo = (e) => {
-        dispatch(setChosenUserId(e.currentTarget.id))
-    }
 
     return (
-        <tr onClick={showUserInfo} id={user.id}>
+        <tr onClick={(e) => {
+            dispatch(setChosenUserId(e.currentTarget.id));
+            setActiveModal(true);
+        }} id={user.id} className={style.row}>
             <td>{user.id}</td>
             <td>{user.firstName}</td>
             <td>{user.lastName}</td>

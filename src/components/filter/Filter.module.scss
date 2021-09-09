@@ -1,0 +1,16 @@
+.filter {
+  background-color: #fff568;
+  padding: 8px;
+  width: 200px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  //margin: 10px 0;
+  margin-top: 15px;
+  font-size: 12px;
+  cursor: pointer;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}

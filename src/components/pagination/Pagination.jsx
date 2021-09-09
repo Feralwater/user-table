@@ -1,4 +1,6 @@
 import React from 'react';
+import {NavLink} from "react-router-dom";
+import style from "./Pagination.module.scss"
 
 const Pagination = ({usersPerPage, totalUsers, paginate}) => {
     const pageNumbers = [];
@@ -9,12 +11,12 @@ const Pagination = ({usersPerPage, totalUsers, paginate}) => {
 
     return (
         <nav>
-            <ul>
+            <ul className={style.pagination__container}>
                 {pageNumbers.map(number => (
-                    <li key={number}>
-                        <a onClick={() => paginate(number)} href='#'>
+                    <li className={style.pagination__item} key={number}>
+                        <NavLink to={`/${number}`} onClick={() => paginate(number)} className={style.pagination__link} activeClassName={style.active}>
                             {number}
-                        </a>
+                        </NavLink>
                     </li>
                 ))}
             </ul>

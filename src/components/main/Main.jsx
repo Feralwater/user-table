@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../../actions/users";
 import UserRow from "../userRow/UserRow";
-import UserInfo from "../userInfo/userInfo";
+import UserInfo from "../userInfo/UserInfo";
 import {setUsers} from "../../reducers/usersReducer";
 import Filter from "../filter/Filter";
-import Pagination from "../../pagination/Pagination";
+import Pagination from "../pagination/Pagination";
+import style from "./Main.module.scss"
+import SearchInput from "../searchInput/SearchInput";
 
 const Main = () => {
     const dispatch = useDispatch();
@@ -19,11 +21,13 @@ const Main = () => {
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
     const paginate = pageNumber => setCurrentPage(pageNumber);
+    const [activeModal, setActiveModal] = useState(false)
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
-    const findUserInfo = (userId) => users.find(u => +u.id === +userId);
+    const findUserInfo = (userId) => users.find(u => u.id === +userId);
     const userInfo = findUserInfo(chosenUserId);
+    console.log(userInfo)
     const searchHandler = () => [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
     let usersForRender = searchHandler();
     const onKeyDown = e => {
@@ -42,21 +46,12 @@ const Main = () => {
         setSortName(sortField);
     }
     return (
-        <div>
-            <div>
-                <input
-                    value={searchValue}
-                    type="text"
-                    placeholder={"Search by name:"}
-                    onChange={(e) => {
-                        setSearchValue(e.currentTarget.value)
-                    }}
-                    onKeyDown={onKeyDown}
-                />
-                <button onClick={() => searchHandler()}>Search</button>
+        <>
+            <div className={style.filters__container}>
+                <SearchInput searchValue={searchValue} setSearchValue={setSearchValue} onKeyDown={onKeyDown}/>
+                <Filter/>
             </div>
-            <Filter/>
-            <table border="1">
+            <table className={style.table}>
                 <thead>
                 <tr>
                     <th onClick={() => {
@@ -87,14 +82,16 @@ const Main = () => {
                 </thead>
                 <tbody>
                 {usersForRender.length > 0 ?
-                    usersForRender.map(u => <UserRow user={u} key={u.id + u.email}/>)
-                    : filteredUsers.length > 0 ? filteredUsers.map(u => <UserRow user={u} key={u.id + u.email}/>)
-                        : currentUsers.map(u => <UserRow user={u} key={u.id + u.email}/>)}
+                    usersForRender.map(u => <UserRow user={u} key={u.id + u.email} setActiveModal={setActiveModal}/>)
+                    : filteredUsers.length > 0 ? filteredUsers.map(u => <UserRow user={u} key={u.id + u.email}
+                                                                                 setActiveModal={setActiveModal}/>)
+                        : currentUsers.map(u => <UserRow user={u} key={u.id + u.email}
+                                                         setActiveModal={setActiveModal}/>)}
                 </tbody>
             </table>
             <Pagination usersPerPage={usersPerPage} totalUsers={users.length} paginate={paginate}/>
-            <UserInfo user={userInfo}/>
-        </div>
+            <UserInfo user={userInfo} activeModal={activeModal} setActiveModal={setActiveModal}/>
+        </>
     );
 };
 
