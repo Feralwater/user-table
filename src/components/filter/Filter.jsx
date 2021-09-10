@@ -2,24 +2,27 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {setUsers} from "../../reducers/usersReducer";
 import style from "./Filter.module.scss"
-import {getUsers} from "../../actions/users";
+
+function OnChange(usersForFilter, dispatch, setSelectState) {
+    return (e) => {
+        const searchValue = e.currentTarget.value
+        const filterFunction = (user) => {
+            return user.adress.state.includes(searchValue)
+        };
+        const filtered = [...usersForFilter].filter(filterFunction);
+        dispatch(setUsers(filtered));
+        setSelectState(searchValue)
+    };
+}
 
 const Filter = () => {
     const dispatch = useDispatch();
-    const users = useSelector(state => state.users.users);
     const [selectState, setSelectState] = useState('');
+    const usersForFilter = useSelector(state => state.users.usersForFilter);
     return (
         <select className={style.filter}
                 value={selectState}
-                onChange={(e) => {
-                    dispatch(setUsers(
-                        [...users].filter(u => u.adress.state === e.currentTarget.value)
-                    ));
-                    e.currentTarget.value === ""
-                    || [...users].filter(u => u.adress.state === e.currentTarget.value).length === 0 ?
-                        dispatch(getUsers())
-                        : setSelectState(e.currentTarget.value);
-                }}>
+                onChange={OnChange(usersForFilter, dispatch, setSelectState)}>
             <option value="">Filter by state</option>
             <option value="PA">PA</option>
             <option value="DC">DC</option>
