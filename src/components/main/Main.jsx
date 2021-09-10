@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers} from "../../actions/users";
-import UserRow from "../userRow/UserRow";
 import UserInfo from "../userInfo/UserInfo";
 import {setUsers} from "../../reducers/usersReducer";
 import Filter from "../filter/Filter";
 import Pagination from "../pagination/Pagination";
 import style from "./Main.module.scss"
 import SearchInput from "../searchInput/SearchInput";
+import Table from "../table/Table";
+
 
 const Main = () => {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
+    const usersForFilter = useSelector(state => state.users.usersForFilter);
     const chosenUserId = useSelector(state => state.users.chosenUserId);
     const [searchValue, setSearchValue] = useState("");
     const [activeModal, setActiveModal] = useState(false)
@@ -32,13 +34,14 @@ const Main = () => {
     const findUserInfo = (userId) => users.find(u => u.id === +userId);
     const userInfo = findUserInfo(chosenUserId);
 
+    let filterFunction = (user) => {
+        const columnNames = ['firstName', 'lastName', 'email', 'phone'];
+        return columnNames.some((columnName) => user[columnName].toLocaleLowerCase().includes(searchValue.trim().toLocaleLowerCase()))
+    };
+
     const searchHandler = () => {
-        searchValue === ""
-        || [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase()).length === 0 ?
-            dispatch(getUsers())
-            : dispatch(setUsers(
-                [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
-            ));
+        let filtered = [...usersForFilter].filter(filterFunction);
+        dispatch(setUsers(filtered));
     }
     const onKeyPress = (e) => {
         if (e.key === "Enter") {
@@ -53,6 +56,7 @@ const Main = () => {
         ));
         setDirection(currentDirection);
         setSortName(sortField);
+        setToggleClass(!toggleClass);
     }
 
     return (<>
@@ -68,58 +72,13 @@ const Main = () => {
                 </div>
                 <div className={style.table__container}>
                     <div>
-                        <table className={style.table}>
-                            <thead>
-                            <tr>
-                                <th onClick={() => {
-                                    sortHandler("id");
-                                    setToggleClass(!toggleClass);
-                                }}
-                                    className={toggleClass ? style.toggle : ''}
-                                >id
-                                </th>
-                                <th onClick={() => {
-                                    sortHandler("firstName");
-                                    setToggleClass(!toggleClass);
-                                }}
-                                    className={toggleClass ? style.toggle : ''}
-                                >First name
-                                </th>
-                                <th onClick={() => {
-                                    sortHandler("lastName");
-                                    setToggleClass(!toggleClass);
-                                }}
-                                    className={toggleClass ? style.toggle : ''}
-                                >Last name
-                                </th>
-                                <th onClick={() => {
-                                    sortHandler("email");
-                                    setToggleClass(!toggleClass);
-                                }}
-                                    className={toggleClass ? style.toggle : ''}
-                                >Email
-                                </th>
-                                <th onClick={() => {
-                                    sortHandler("phone");
-                                    setToggleClass(!toggleClass);
-                                }}
-                                    className={toggleClass ? style.toggle : ''}
-                                >Phone
-                                </th>
-                                <th onClick={() => {
-                                    sortHandler("state");
-                                    setToggleClass(!toggleClass);
-                                }}
-                                    className={toggleClass ? style.toggle : ''}
-                                >State
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {currentUsers.map(u => <UserRow user={u} key={u.id + u.email}
-                                                            setActiveModal={setActiveModal}/>)}
-                            </tbody>
-                        </table>
+                        <Table sortHandler={sortHandler}
+                               toggleClass={toggleClass}
+                               currentUsers={currentUsers}
+                               setActiveModal={setActiveModal}
+                               sortName={sortName}
+                               direction={direction}
+                        />
                     </div>
                     <div>
                         <Pagination usersPerPage={usersPerPage} totalUsers={users.length} paginate={paginate}/>

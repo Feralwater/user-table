@@ -6,7 +6,7 @@ const SearchInput = ({searchValue, setSearchValue, onKeyPress}) => {
         className={style.input}
         value={searchValue}
         type="text"
-        placeholder={"Search by name:"}
+        placeholder={"Enter a search value and press Enter"}
         onChange={(e) => {
             setSearchValue(e.currentTarget.value);
         }}
