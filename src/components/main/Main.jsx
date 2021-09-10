@@ -12,19 +12,18 @@ import SearchInput from "../searchInput/SearchInput";
 const Main = () => {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
-    const filteredUsers = useSelector(state => state.users.filteredUsers);
     const chosenUserId = useSelector(state => state.users.chosenUserId);
     const [searchValue, setSearchValue] = useState("");
+    const [activeModal, setActiveModal] = useState(false)
+    const [sortName, setSortName] = useState('');
+    const [direction, setDirection] = useState(-1);
+    const [toggleClass, setToggleClass] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [usersPerPage] = useState(20);
     const indexOfLastUser = currentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
     const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
     const paginate = pageNumber => setCurrentPage(pageNumber);
-    const [activeModal, setActiveModal] = useState(false)
-    const [sortName, setSortName] = useState('');
-    const [direction, setDirection] = useState(-1);
-    const [toggleClass, setToggleClass] = useState(false);
 
     useEffect(() => {
         dispatch(getUsers())
@@ -32,19 +31,26 @@ const Main = () => {
 
     const findUserInfo = (userId) => users.find(u => u.id === +userId);
     const userInfo = findUserInfo(chosenUserId);
-    const searchHandler = () => [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
-    let usersForRender = searchHandler();
 
-    const onKeyDown = e => {
+    const searchHandler = () => {
+        searchValue === ""
+        || [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase()).length === 0 ?
+            dispatch(getUsers())
+            : dispatch(setUsers(
+                [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
+            ));
+    }
+    const onKeyPress = (e) => {
         if (e.key === "Enter") {
-            usersForRender = [...users].filter(u => u.firstName.toLocaleLowerCase() === searchValue.trim().toLocaleLowerCase())
+            searchHandler();
         }
     }
 
     const sortHandler = (sortField) => {
         const currentDirection = (sortName === sortField) ? -direction : -1;
-        usersForRender = [...users].sort((a, b) => a[sortField] > b[sortField] ? -currentDirection : currentDirection);
-        dispatch(setUsers(usersForRender));
+        dispatch(setUsers(
+            [...users].sort((a, b) => a[sortField] > b[sortField] ? -currentDirection : currentDirection)
+        ));
         setDirection(currentDirection);
         setSortName(sortField);
     }
@@ -52,7 +58,12 @@ const Main = () => {
     return (<>
             <div className={style.container}>
                 <div className={style.filters__container}>
-                    <SearchInput searchValue={searchValue} setSearchValue={setSearchValue} onKeyDown={onKeyDown}/>
+                    <SearchInput
+                        searchValue={searchValue}
+                        setSearchValue={setSearchValue}
+                        onKeyPress={onKeyPress}
+                        searchHandler={searchHandler}
+                    />
                     <Filter/>
                 </div>
                 <div className={style.table__container}>
@@ -105,14 +116,8 @@ const Main = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {usersForRender.length > 0 ?
-                                usersForRender.map(u => <UserRow user={u} key={u.id + u.email}
-                                                                 setActiveModal={setActiveModal}/>)
-                                : filteredUsers.length > 0 ? filteredUsers.map(u => <UserRow user={u}
-                                                                                             key={u.id + u.email}
-                                                                                             setActiveModal={setActiveModal}/>)
-                                    : currentUsers.map(u => <UserRow user={u} key={u.id + u.email}
-                                                                     setActiveModal={setActiveModal}/>)}
+                            {currentUsers.map(u => <UserRow user={u} key={u.id + u.email}
+                                                            setActiveModal={setActiveModal}/>)}
                             </tbody>
                         </table>
                     </div>

@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setFilteredUsers} from "../../reducers/usersReducer";
+import {setUsers} from "../../reducers/usersReducer";
 import style from "./Filter.module.scss"
+import {getUsers} from "../../actions/users";
 
 const Filter = () => {
     const dispatch = useDispatch();
@@ -9,10 +10,16 @@ const Filter = () => {
     const [selectState, setSelectState] = useState('');
     return (
         <select className={style.filter}
-            value={selectState} onChange={(e) => {
-            dispatch(setFilteredUsers(users, e.currentTarget.value));
-            setSelectState(e.currentTarget.value);
-        }}>
+                value={selectState}
+                onChange={(e) => {
+                    dispatch(setUsers(
+                        [...users].filter(u => u.adress.state === e.currentTarget.value)
+                    ));
+                    e.currentTarget.value === ""
+                    || [...users].filter(u => u.adress.state === e.currentTarget.value).length === 0 ?
+                        dispatch(getUsers())
+                        : setSelectState(e.currentTarget.value);
+                }}>
             <option value="">Filter by state</option>
             <option value="PA">PA</option>
             <option value="DC">DC</option>
@@ -34,6 +41,7 @@ const Filter = () => {
             <option value="LA">LA</option>
             <option value="HI">HI</option>
             <option value="CT">CT</option>
+            <option value="TX">TX</option>
         </select>
     );
 };
