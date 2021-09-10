@@ -1,52 +1,92 @@
-.table {
-  table-layout: fixed;
-  width: 100%;
-  border-collapse: collapse;
-  color: #ffffff;
-  text-align: center;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.3);
-  height: 80vh;
+.table__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 
-  thead {
-    tr {
-      height: 50px;
-      font-size: 14px;
-      font-weight: bold;
+  .table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    color: #ffffff;
+    text-align: center;
+    cursor: pointer;
+
+
+    thead {
+
+
+      tr {
+        height: 50px;
+        font-size: 14px;
+        font-weight: bold;
+
+      }
+
+      th {
+        position: relative;
+
+        &.toggle {
+          &:after {
+            transform: translateY(50%) rotate(180deg);
+          }
+        }
+
+        &:after {
+          width: 10px;
+          height: 6px;
+          background: url("../svgImages/arrow.svg") no-repeat center / cover;
+          position: absolute;
+          right: 0;
+          bottom: 50%;
+          transform: translateY(50%);
+          content: '';
+          display: block;
+          transition: .2s ease-in;
+
+
+        }
+
+        &:nth-child(1) {
+          width: 5%;
+        }
+
+        &:nth-child(2) {
+          width: 15%;
+        }
+
+        &:nth-child(3) {
+          width: 15%;
+        }
+
+        &:nth-child(4) {
+          width: 30%;
+        }
+
+        &:nth-child(5) {
+          width: 25%;
+        }
+
+        &:nth-child(6) {
+          width: 10%;
+        }
+      }
+
     }
-
-    th {
-      //border: 3px solid rgba(242, 242, 242, 0.3);
-
-      &:nth-child(1) {
-        width: 5%;
-      }
-
-      &:nth-child(2) {
-        width: 15%;
-      }
-
-      &:nth-child(3) {
-        width: 15%;
-      }
-
-      &:nth-child(4) {
-        width: 30%;
-      }
-
-      &:nth-child(5) {
-        width: 25%;
-      }
-
-      &:nth-child(6) {
-        width: 10%;
-      }
-    }
-
   }
 }
-.filters__container{
+
+.filters__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.container {
+  width: 50vw;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  height: 80vh;
+  background-color: rgba(0, 0, 0, 0.3);
 }
