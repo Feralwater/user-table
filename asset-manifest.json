@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/Feralwater/user-table.git/static/css/main.c3c919ac.chunk.css",
+    "main.js": "/Feralwater/user-table.git/static/js/main.7a6e0516.chunk.js",
+    "main.js.map": "/Feralwater/user-table.git/static/js/main.7a6e0516.chunk.js.map",
+    "runtime-main.js": "/Feralwater/user-table.git/static/js/runtime-main.3b1cf5b2.js",
+    "runtime-main.js.map": "/Feralwater/user-table.git/static/js/runtime-main.3b1cf5b2.js.map",
+    "static/js/2.c863b753.chunk.js": "/Feralwater/user-table.git/static/js/2.c863b753.chunk.js",
+    "static/js/2.c863b753.chunk.js.map": "/Feralwater/user-table.git/static/js/2.c863b753.chunk.js.map",
+    "index.html": "/Feralwater/user-table.git/index.html",
+    "static/css/main.c3c919ac.chunk.css.map": "/Feralwater/user-table.git/static/css/main.c3c919ac.chunk.css.map",
+    "static/js/2.c863b753.chunk.js.LICENSE.txt": "/Feralwater/user-table.git/static/js/2.c863b753.chunk.js.LICENSE.txt",
+    "static/media/Table.module.scss": "/Feralwater/user-table.git/static/media/arrow.e497e5fb.svg",
+    "static/media/Index.module.scss": "/Feralwater/user-table.git/static/media/bg.641fcc21.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3b1cf5b2.js",
+    "static/js/2.c863b753.chunk.js",
+    "static/css/main.c3c919ac.chunk.css",
+    "static/js/main.7a6e0516.chunk.js"
+  ]
+}
