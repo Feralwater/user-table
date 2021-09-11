@@ -1,15 +1,16 @@
 import Main from "./main/Main";
 import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import style from "./App.module.scss"
+import {createBrowserHistory} from 'history';
 
 function App() {
+    const history = createBrowserHistory();
     return (
-        <BrowserRouter>
-                <Switch>
-                    <Route exact path={"/"} component={Main}/>
-                    <Route path={"/:number"} component={Main}/>
-                    <Redirect to="/"/>
-                </Switch>
+        <BrowserRouter history={history}>
+            <Switch>
+                <Route exact path={"/"} component={Main}/>
+                <Route path={"/:number"} component={Main}/>
+                <Redirect to="/"/>
+            </Switch>
         </BrowserRouter>
     );
 }

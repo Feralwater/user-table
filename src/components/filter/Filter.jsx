@@ -11,7 +11,7 @@ function OnChange(usersForFilter, dispatch, setSelectState) {
         };
         const filtered = [...usersForFilter].filter(filterFunction);
         dispatch(setUsers(filtered));
-        setSelectState(searchValue)
+        setSelectState(searchValue);
     };
 }
 

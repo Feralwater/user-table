@@ -10,7 +10,7 @@ import SearchInput from "../searchInput/SearchInput";
 import Table from "../table/Table";
 
 
-const Main = () => {
+const Main = ({match}) => {
     const dispatch = useDispatch();
     const users = useSelector(state => state.users.users);
     const usersForFilter = useSelector(state => state.users.usersForFilter);
@@ -81,7 +81,12 @@ const Main = () => {
                         />
                     </div>
                     <div>
-                        <Pagination usersPerPage={usersPerPage} totalUsers={users.length} paginate={paginate}/>
+                        <Pagination
+                            usersPerPage={usersPerPage}
+                            totalUsers={users.length}
+                            paginate={paginate}
+                            match={match}
+                        />
                     </div>
                 </div>
             </div>
