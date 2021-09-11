@@ -6,15 +6,11 @@
   text-align: center;
   cursor: pointer;
 
-
   thead {
-
-
     tr {
       height: 50px;
       font-size: 14px;
       font-weight: bold;
-
     }
 
     th {
@@ -37,8 +33,6 @@
         content: '';
         display: block;
         transition: .2s ease-in;
-
-
       }
 
       &:nth-child(1) {

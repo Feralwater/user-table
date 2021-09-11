@@ -17,7 +17,6 @@ const Main = ({match}) => {
     const chosenUserId = useSelector(state => state.users.chosenUserId);
     const searchValue = useSelector(state => state.users.searchValue);
     const selectValue = useSelector(state => state.users.selectValue);
-
     const [activeModal, setActiveModal] = useState(false)
     const [sortName, setSortName] = useState('');
     const [direction, setDirection] = useState(-1);
@@ -44,8 +43,6 @@ const Main = ({match}) => {
 
     const searchHandler = () => {
         filterBySearchAndState({searchValue})
-        // let filtered = [...usersForFilter].filter(filterBySearch);
-        // dispatch(setUsers(filtered));
     }
     const onKeyPress = (e) => {
         if (e.key === "Enter") {
