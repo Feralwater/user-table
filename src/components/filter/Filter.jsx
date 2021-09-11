@@ -1,28 +1,31 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {setUsers} from "../../reducers/usersReducer";
+import {setSelectValue, setUsers} from "../../reducers/usersReducer";
 import style from "./Filter.module.scss"
 
-function OnChange(usersForFilter, dispatch, setSelectState) {
+function OnChange(usersForFilter, dispatch, filterBySearchAndState) {
     return (e) => {
-        const searchValue = e.currentTarget.value
-        const filterFunction = (user) => {
-            return user.adress.state.includes(searchValue)
-        };
-        const filtered = [...usersForFilter].filter(filterFunction);
-        dispatch(setUsers(filtered));
-        setSelectState(searchValue);
+        const selectValue = e.currentTarget.value
+        dispatch(setSelectValue(selectValue))
+        // const filterFunction = (user) => {
+        //     return user.adress.state.includes(selectValue)
+        // };
+        // const filtered = [...usersForFilter].filter(filterFunction);
+        // dispatch(setUsers(filtered));
+        // setSelectState(selectValue);
+        filterBySearchAndState({selectValue})
     };
 }
 
-const Filter = () => {
+const Filter = ({filterBySearchAndState}) => {
     const dispatch = useDispatch();
-    const [selectState, setSelectState] = useState('');
+    // const [selectState, setSelectState] = useState('');
+    const selectValue = useSelector(state => state.users.selectValue);
     const usersForFilter = useSelector(state => state.users.usersForFilter);
     return (
         <select className={style.filter}
-                value={selectState}
-                onChange={OnChange(usersForFilter, dispatch, setSelectState)}>
+                value={selectValue}
+                onChange={OnChange(usersForFilter, dispatch, filterBySearchAndState)}>
             <option value="">Filter by state</option>
             <option value="PA">PA</option>
             <option value="DC">DC</option>

@@ -1,14 +1,18 @@
 import React from "react";
 import style from "./SearchInput.module.scss"
+import {setSearchValue} from "../../reducers/usersReducer";
+import {useDispatch, useSelector} from "react-redux";
 
-const SearchInput = ({searchValue, setSearchValue, onKeyPress}) => {
+const SearchInput = ({onKeyPress}) => {
+    const dispatch = useDispatch();
+    const searchValue = useSelector(state => state.users.searchValue);
     return (<input
         className={style.input}
         value={searchValue}
         type="text"
         placeholder={"Enter a search value and press Enter"}
         onChange={(e) => {
-            setSearchValue(e.currentTarget.value);
+            dispatch(setSearchValue(e.currentTarget.value));
         }}
         onKeyPress={onKeyPress}
     />);

@@ -15,7 +15,9 @@ const Main = ({match}) => {
     const users = useSelector(state => state.users.users);
     const usersForFilter = useSelector(state => state.users.usersForFilter);
     const chosenUserId = useSelector(state => state.users.chosenUserId);
-    const [searchValue, setSearchValue] = useState("");
+    const searchValue = useSelector(state => state.users.searchValue);
+    const selectValue = useSelector(state => state.users.selectValue);
+
     const [activeModal, setActiveModal] = useState(false)
     const [sortName, setSortName] = useState('');
     const [direction, setDirection] = useState(-1);
@@ -34,14 +36,16 @@ const Main = ({match}) => {
     const findUserInfo = (userId) => users.find(u => u.id === +userId);
     const userInfo = findUserInfo(chosenUserId);
 
-    let filterFunction = (user) => {
+    function filterBySearch (user)  {
+        const searchValue2 = this.searchValue ?? searchValue
         const columnNames = ['firstName', 'lastName', 'email', 'phone'];
-        return columnNames.some((columnName) => user[columnName].toLocaleLowerCase().includes(searchValue.trim().toLocaleLowerCase()))
+        return columnNames.some((columnName) => user[columnName].toLocaleLowerCase().includes(searchValue2.trim().toLocaleLowerCase()))
     };
 
     const searchHandler = () => {
-        let filtered = [...usersForFilter].filter(filterFunction);
-        dispatch(setUsers(filtered));
+        filterBySearchAndState({searchValue})
+        // let filtered = [...usersForFilter].filter(filterBySearch);
+        // dispatch(setUsers(filtered));
     }
     const onKeyPress = (e) => {
         if (e.key === "Enter") {
@@ -58,17 +62,23 @@ const Main = ({match}) => {
         setSortName(sortField);
         setToggleClass(!toggleClass);
     }
+    function filterByState (user)  {
+        return user.adress.state.includes(this.selectValue ?? selectValue)
+    };
+
+    const filterBySearchAndState = (filter) => {
+        const filtered = [...usersForFilter].filter(filterBySearch,filter).filter(filterByState,filter);
+        dispatch(setUsers(filtered));
+    }
 
     return (<>
             <div className={style.container}>
                 <div className={style.filters__container}>
                     <SearchInput
-                        searchValue={searchValue}
-                        setSearchValue={setSearchValue}
                         onKeyPress={onKeyPress}
                         searchHandler={searchHandler}
                     />
-                    <Filter/>
+                    <Filter filterBySearchAndState={filterBySearchAndState}/>
                 </div>
                 <div className={style.table__container}>
                     <div>
