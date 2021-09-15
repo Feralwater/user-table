@@ -2,10 +2,10 @@ import React from 'react';
 import {NavLink, useHistory} from "react-router-dom";
 import style from "./Pagination.module.scss"
 
-const Pagination = ({usersPerPage, totalUsers, paginate, match}) => {
+const Pagination = ({usersPerPage, totalUsers, pageNumber}) => {
     const pageNumbers = [];
     const history = useHistory();
-    const currentPage = match.params.number || 1;
+    const currentPage = pageNumber;
     let pagesCount = totalUsers / usersPerPage;
     if (currentPage > pagesCount + 1) {
         history.push('/1');
@@ -20,7 +20,7 @@ const Pagination = ({usersPerPage, totalUsers, paginate, match}) => {
                 {pageNumbers.map(number => (
                     <li className={style.pagination__item} key={number}>
                         <NavLink to={`/${number}`}
-                                 onClick={() => paginate(number)}
+                                 onClick={() => history.push('/' + number)}
                                  className={style.pagination__link}
                                  activeClassName={style.active}>
                             {number}

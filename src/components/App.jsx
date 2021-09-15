@@ -7,9 +7,8 @@ function App() {
     return (
         <BrowserRouter history={history}>
             <Switch>
-                <Route exact path={"/"} component={Main}/>
                 <Route path={"/:number"} component={Main}/>
-                <Redirect to="/"/>
+                <Redirect to="/1"/>
             </Switch>
         </BrowserRouter>
     );
