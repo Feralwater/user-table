@@ -1,12 +1,26 @@
 .row {
-  font-size: 12px;
+  font-size: 18px;
+  height: 70px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 
   &:hover {
     color: black;
     background-color: rgba(242, 242, 242, 0.8);
+    text-shadow: none;
   }
 
   td {
-    padding: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    text-align: center;
+
+    &:first-child {
+      border-radius: 6px 0 0 6px;
+    }
+
+    &:last-child {
+      border-radius: 0 6px 6px 0;
+    }
   }
 }

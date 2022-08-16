@@ -16,7 +16,7 @@ const Table = ({sortHandler, currentUsers, setActiveModal, sortName, direction})
             <thead>
             <tr>
                 {Object.entries(columnsNames).map(([key, value]) =>
-                    <th onClick={() => {
+                    <th key={key} onClick={() => {
                         sortHandler(key);
                     }} className={sortName === key && direction === -1 ? style.toggle : ''}
                     >{value}

@@ -20,7 +20,7 @@ const Main = () => {
     const [activeModal, setActiveModal] = useState(false)
     const [sortName, setSortName] = useState('');
     const [direction, setDirection] = useState(-1);
-    const [usersPerPage] = useState(20);
+    const [usersPerPage] = useState(10);
     const {number} = useParams();
     const indexOfLastUser = number * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
