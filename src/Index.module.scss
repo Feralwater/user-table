@@ -5,5 +5,5 @@ body {
   background: url("/images/bg.jpg") no-repeat center / cover;
   background-size: cover;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
 }

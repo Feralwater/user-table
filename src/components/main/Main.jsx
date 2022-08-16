@@ -39,8 +39,7 @@ const Main = () => {
 
     function filterBySearch(user) {
         const columnNames = ['firstName', 'lastName', 'email', 'phone'];
-        return columnNames.some((columnName) =>
-            user[columnName].toLocaleLowerCase().includes(searchValue.trim().toLocaleLowerCase()))
+        return columnNames.some((columnName) => user[columnName].toLocaleLowerCase().includes(searchValue.trim().toLocaleLowerCase()))
     }
 
     const sortHandler = (sortField) => {
@@ -65,27 +64,20 @@ const Main = () => {
                     <SearchInput/>
                     <Filter filterBySearchAndState={filterBySearchAndState}/>
                 </div>
-                <div className={style.table__container}>
-                    <div>
-                        <Table sortHandler={sortHandler}
-                               currentUsers={currentUsers}
-                               setActiveModal={setActiveModal}
-                               sortName={sortName}
-                               direction={direction}
-                        />
-                    </div>
-                    <div>
-                        <Pagination
-                            usersPerPage={usersPerPage}
-                            totalUsers={users.length}
-                            pageNumber={number}
-                        />
-                    </div>
-                </div>
+                <Table sortHandler={sortHandler}
+                       currentUsers={currentUsers}
+                       setActiveModal={setActiveModal}
+                       sortName={sortName}
+                       direction={direction}
+                />
             </div>
+            <Pagination
+                usersPerPage={usersPerPage}
+                totalUsers={users.length}
+                pageNumber={number}
+            />
             <UserInfo user={userInfo} activeModal={activeModal} setActiveModal={setActiveModal}/>
-        </>
-    );
+        </>);
 };
 
 export default Main;

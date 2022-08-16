@@ -1,17 +1,10 @@
 .container {
-  width: 90vw;
+  width: 90%;
   margin: 0 auto;
   padding: 10px;
   box-sizing: border-box;
-  height: 80vh;
+  overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.3);
-
-  .table__container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-  }
 
   .filters__container {
     display: flex;

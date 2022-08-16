@@ -3,8 +3,11 @@
   &__container {
     display: flex;
     list-style-type: none;
-    padding: 0;
     align-items: center;
+    width: 90%;
+    justify-content: flex-end;
+    margin: 0 auto;
+    padding: 10px;
   }
 
   &__item {
